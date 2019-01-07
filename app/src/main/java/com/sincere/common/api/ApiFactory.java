@@ -8,10 +8,10 @@ import com.sincere.common.base.BaseRetrofit;
  */
 
 public class ApiFactory {
-    private String baseUrl = "http://api.okayapi.com/";
+    private String baseUrl = "http://222.85.133.48:40001/";
     private volatile static Api api;
 
-    public static Api getApiService() {
+    public static Api getApi() {
         if (api == null) {
             synchronized (ApiFactory.class) {
                 if (api == null) {

@@ -3,10 +3,10 @@ package com.sincere.common.base;
 import android.content.Context;
 import android.util.Log;
 
+import com.sincere.common.http.HttpThrowable;
 import com.sincere.common.http.ObserverResponseListener;
 import com.sincere.common.http.ProgressCancelListener;
 import com.sincere.common.http.ProgressDialogHandler;
-import com.sincere.common.utils.LogUtil;
 import com.sincere.common.utils.ToastUtil;
 
 import java.net.ConnectException;
@@ -20,13 +20,13 @@ import retrofit2.HttpException;
 /**
  * 观察者
  */
-public class BaseObserver<T> implements Observer<T>, ProgressCancelListener {
+public class BaseObserver<T> implements Observer<BaseRsp<T>>, ProgressCancelListener {
     private static final String TAG = "ProgressObserver____ ";
-    private ObserverResponseListener listener;
+    private ObserverResponseListener<T> listener;
     private ProgressDialogHandler mProgressDialogHandler;
     private Disposable d;
 
-    public BaseObserver(Context context, ObserverResponseListener listener, boolean isDialog, boolean cancelable) {
+    public BaseObserver(Context context, ObserverResponseListener<T> listener, boolean isDialog, boolean cancelable) {
         this.listener = listener;
         if (isDialog) {
             mProgressDialogHandler = new ProgressDialogHandler(context, this, cancelable);
@@ -54,10 +54,13 @@ public class BaseObserver<T> implements Observer<T>, ProgressCancelListener {
     }
 
     @Override
-    public void onNext(T t) {
+    public void onNext(BaseRsp<T> t) {
         if (t != null) {
-            LogUtil.i(t.toString());
-            listener.onNext(t);//可定制接口，通过code回调处理不同的业务
+            if (t.code == 200) {
+                listener.onNext(t.content);//可定制接口，通过code回调处理不同的业务
+            } else {
+                listener.onError(new HttpThrowable(t.message));
+            }
         } else {
             listener.onError(new Throwable());
         }
@@ -76,6 +79,8 @@ public class BaseObserver<T> implements Observer<T>, ProgressCancelListener {
             ToastUtil.toastShortMessage("连接失败");
         } else if (e instanceof HttpException) {
             ToastUtil.toastShortMessage("请求超时");
+        } else if (e instanceof HttpThrowable) {
+            ToastUtil.toastShortMessage(((HttpThrowable) e).message);
         } else {
             ToastUtil.toastShortMessage("请求失败");
         }

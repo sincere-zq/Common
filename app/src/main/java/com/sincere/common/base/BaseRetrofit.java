@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.sincere.common.app.CommonApplication;
 import com.sincere.common.utils.NetworkUtil;
+import com.sincere.common.utils.PreferencesWrapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,9 +28,9 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class BaseRetrofit {
     //读超时长，单位：毫秒
-    public static final int READ_TIME_OUT = 7676;
+    public static final int READ_TIME_OUT = 60;
     //连接时长，单位：毫秒
-    public static final int CONNECT_TIME_OUT = 7676;
+    public static final int CONNECT_TIME_OUT = 60;
 
     /**
      * 无超时及缓存策略的Retrofit
@@ -60,12 +61,14 @@ public class BaseRetrofit {
         //缓存
         File cacheFile = new File(CommonApplication.getApplication().getCacheDir(), "cache");
         Cache cache = new Cache(cacheFile, 1024 * 1024 * 100); //100Mb
+        final String token = PreferencesWrapper.getPreferencesWrapper().getUserToken();
         //增加头部信息
         Interceptor headerInterceptor = new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request build = chain.request().newBuilder()
                         .addHeader("Content-Type", "application/json")//设置允许请求json数据
+                        .addHeader("token", token == null ? "" : token)
                         .build();
                 return chain.proceed(build);
             }
@@ -73,8 +76,8 @@ public class BaseRetrofit {
 
         //创建一个OkHttpClient并设置超时时间
         OkHttpClient client = new OkHttpClient.Builder()
-                .readTimeout(READ_TIME_OUT, TimeUnit.MILLISECONDS)
-                .connectTimeout(CONNECT_TIME_OUT, TimeUnit.MILLISECONDS)
+                .readTimeout(READ_TIME_OUT, TimeUnit.SECONDS)
+                .connectTimeout(CONNECT_TIME_OUT, TimeUnit.SECONDS)
                 .addInterceptor(mRewriteCacheControlInterceptor)//没网的情况下
                 .addNetworkInterceptor(mRewriteCacheControlInterceptor)//有网的情况下
                 .addInterceptor(headerInterceptor)

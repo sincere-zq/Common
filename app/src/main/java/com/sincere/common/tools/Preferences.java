@@ -13,52 +13,52 @@ import java.io.Serializable;
  */
 public class Preferences {
 
-    protected static void saveInt(String key, int value) {
+    protected void saveInt(String key, int value) {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.putInt(key, value);
         editor.commit();
     }
 
-    protected static int getInt(String key) {
+    protected int getInt(String key) {
         return getSharedPreferences().getInt(key, -1);
     }
 
-    protected static void saveString(String key, String value) {
+    protected void saveString(String key, String value) {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.putString(key, value);
         editor.commit();
     }
 
-    protected static String getString(String key) {
+    protected String getString(String key) {
         return getSharedPreferences().getString(key, null);
     }
 
-    protected static boolean getBoolean(String key, boolean value) {
+    protected boolean getBoolean(String key, boolean value) {
         return getSharedPreferences().getBoolean(key, value);
     }
 
-    protected static void saveBoolean(String key, boolean value) {
+    protected void saveBoolean(String key, boolean value) {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.putBoolean(key, value);
         editor.commit();
     }
 
-    protected static void saveLong(String key, long value) {
+    protected void saveLong(String key, long value) {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.putLong(key, value);
         editor.commit();
     }
 
-    protected static long getLong(String key, long value) {
+    protected long getLong(String key, long value) {
         return getSharedPreferences().getLong(key, value);
     }
 
-    protected static <T extends Serializable> void saveObj(String key, T t) {
+    protected <T extends Serializable> void saveObj(String key, T t) {
         String json = new Gson().toJson(t);
         saveString(key, json);
     }
 
-    protected static <T extends Serializable> T getObj(String key, Class<T> tClass) {
+    protected <T extends Serializable> T getObj(String key, Class<T> tClass) {
         String json = getString(key);
         T t = null;
         try {
@@ -69,7 +69,7 @@ public class Preferences {
         return t;
     }
 
-    protected static void clean() {
+    protected void clean() {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.clear();
         editor.commit();

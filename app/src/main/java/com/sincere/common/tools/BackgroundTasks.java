@@ -21,6 +21,10 @@ public class BackgroundTasks {
         return instance;
     }
 
+    public void delay(Runnable runnable, long delay) {
+        mHandler.postDelayed(runnable, delay);
+    }
+
 
     // 需要在主线程中初始化
     public static void initInstance() {

@@ -7,4 +7,8 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorLoginDefault">#5385d9</color>
     <color name="colorLoginPress">#0f62ea</color>
+    <color name="colorPink">#FFB5C5</color>
+    <color name="colorPinkPress">#FFC0CB</color>
+    <color name="colorLightBlue">#6CA6CD</color>
+    <color name="colorLightBluePress">#87CEFF</color>
 </resources>

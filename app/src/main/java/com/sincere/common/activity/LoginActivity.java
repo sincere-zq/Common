@@ -11,7 +11,6 @@ import com.sincere.common.bean.UserInfo;
 import com.sincere.common.contract.LoginContract;
 import com.sincere.common.model.LoginModel;
 import com.sincere.common.presenter.LoginPresenter;
-import com.sincere.common.utils.MdWorkUtil;
 import com.sincere.common.utils.PreferencesWrapper;
 import com.sincere.common.utils.ToastUtil;
 
@@ -48,7 +47,6 @@ public class LoginActivity extends BaseActivity<LoginContract.ILoginView, LoginC
 
     @Override
     public void init() {
-
     }
 
     @Override
@@ -57,7 +55,7 @@ public class LoginActivity extends BaseActivity<LoginContract.ILoginView, LoginC
         UserInfo userInfo = PreferencesWrapper.getPreferencesWrapper().getUserInfo();
         if (userInfo != null) {
             etUserName.setText(userInfo.phone);
-            etPassword.setText(MdWorkUtil.convertMD5(userInfo.loginPwd));
+            etPassword.setText(userInfo.loginPwd);
         }
     }
 

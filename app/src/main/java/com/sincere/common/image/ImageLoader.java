@@ -25,17 +25,17 @@ public class ImageLoader implements IImageLoader {
     @Override
     public void loadImage(String imageUrl, ImageView imageView) {
 
-        loadImage(imageUrl, imageView, R.mipmap.ic_launcher, R.mipmap.ic_launcher);
+        loadImage(imageUrl, imageView, R.mipmap.ic_loading_large, R.mipmap.ic_loading_large);
     }
 
     @Override
     public void loadCircleImage(String imageUrl, ImageView imageView) {
         Glide.with(imageView.getContext())
-                .load(imageUrl)
+                .load(IMAGE_BASE_URL +imageUrl)
                 .centerCrop()
-                .placeholder(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_loading_large)
                 .crossFade()
-                .error(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_loading_large)
                 .bitmapTransform(new CropCircleTransformation(imageView.getContext()))
                 .into(imageView);
     }
@@ -43,11 +43,11 @@ public class ImageLoader implements IImageLoader {
     @Override
     public void loadRoundImage(String imageUrl, ImageView imageView) {
         Glide.with(imageView.getContext())
-                .load(imageUrl)
+                .load(IMAGE_BASE_URL +imageUrl)
                 .centerCrop()
-                .placeholder(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_loading_large)
                 .crossFade()
-                .error(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_loading_large)
                 .bitmapTransform(new RoundedCornersTransformation(imageView.getContext(), 15, 0))
                 .into(imageView);
     }
